@@ -28,16 +28,18 @@ public class ConversationalClock {
 
     String currentTime() {
 
-        if (minute > 30) {
-            relativeHour = hour + 1;
-        }
-
         if (minute != 0 && minute < 5) {
             relativePrefix = "just after ";
+            relativeMinute = -1;
         }
 
         if (minute != 0 && minute > 55) {
            relativePrefix = "almost ";
+            relativeMinute = -1;
+        }
+
+        if (minute > 30) {
+            relativeHour = hour + 1;
         }
 
         if (minute > 5 && minute <= 30) {
