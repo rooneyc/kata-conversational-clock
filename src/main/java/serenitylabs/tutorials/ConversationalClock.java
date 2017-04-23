@@ -21,8 +21,10 @@ public class ConversationalClock {
         String hourString = "";
 
         switch (hour) {
+            case 0: hourString = "midnight";
+                break;
             case 1: hourString = "one";
-                    break;
+                break;
             case 2: hourString = "two";
                 break;
             case 3: hourString = "three";
@@ -67,8 +69,6 @@ public class ConversationalClock {
                 break;
             case 23: hourString = "eleven";
                 break;
-            case 24: hourString = "midnight";
-                break;
         }
 
         RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
@@ -76,7 +76,7 @@ public class ConversationalClock {
         String minuteString = ruleBasedNumberFormat.format(now.minute()).replace("-", " ");
 
         if (now.minute() == 0) {
-            if (hour != 12 && hour != 24) {
+            if (hour != 12 && hour != 0) {
                 return prefix + hourString + " o'clock";
             } else {
                 return prefix + hourString;
@@ -85,7 +85,8 @@ public class ConversationalClock {
             return prefix + minuteString + " past " + hourString;
         }
 
+    }
 
-}
+
 
 }

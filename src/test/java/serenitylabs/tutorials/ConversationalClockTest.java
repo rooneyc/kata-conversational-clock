@@ -5,6 +5,8 @@ import com.googlecode.zohhak.api.TestWith;
 import com.googlecode.zohhak.api.runners.ZohhakRunner;
 import org.junit.runner.RunWith;
 
+import java.time.LocalTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -13,6 +15,7 @@ import static org.mockito.Mockito.when;
 public class ConversationalClockTest {
 
     @TestWith({
+            "00:00, it's midnight",
             "01:00, it's one o'clock",
             "02:00, it's two o'clock",
             "03:00, it's three o'clock",
@@ -36,7 +39,6 @@ public class ConversationalClockTest {
             "21:00, it's nine o'clock",
             "22:00, it's ten o'clock",
             "23:00, it's eleven o'clock",
-            "24:00, it's midnight",
     })
     public void should_tell_the_time_on_the_hour(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
@@ -64,6 +66,8 @@ public class ConversationalClockTest {
     public ConversationalClock clockSetTo(String requiredTime) {
 
         HourAndMinute time = new HourAndMinute(requiredTime);
+
+//        SystemTime systemTime = new SystemTime();
 
         SystemTime systemTime = mock(SystemTime.class);
         when(systemTime.hour()).thenReturn(time.hour());
