@@ -88,12 +88,10 @@ public class ConversationalClockTest {
 
         HourAndMinute time = new HourAndMinute(requiredTime);
 
-//        SystemTime systemTime = new SystemTime();
-
         SystemTime systemTime = mock(SystemTime.class);
         when(systemTime.hour()).thenReturn(time.hour());
         when(systemTime.minute()).thenReturn(time.minute());
 
-        return new ConversationalClock(systemTime);
+        return new ConversationalClock(systemTime, new HourTranslator(), new MinuteTranslator());
     }
 }

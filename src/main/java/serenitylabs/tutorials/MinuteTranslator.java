@@ -7,7 +7,7 @@ import java.util.Locale;
 
 class MinuteTranslator {
 
-    static String wordForMinute(int minute) {
+    String wordForMinute(int minute) {
 
         if (minute == 15) {
             return "a quarter";
@@ -25,7 +25,7 @@ class MinuteTranslator {
 
     }
 
-    private static String wordForInt(int intPrimitive) {
+    private String wordForInt(int intPrimitive) {
 
         String intString;
 

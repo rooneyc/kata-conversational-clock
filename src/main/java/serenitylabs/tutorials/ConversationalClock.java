@@ -1,9 +1,5 @@
 package serenitylabs.tutorials;
 
-import static serenitylabs.tutorials.HourTranslator.hourSuffix;
-import static serenitylabs.tutorials.HourTranslator.wordForHour;
-import static serenitylabs.tutorials.MinuteTranslator.wordForMinute;
-
 public class ConversationalClock {
 
     private final SystemTime now;
@@ -13,10 +9,12 @@ public class ConversationalClock {
     private int relativeMinute;
     private String relativeSeparator;
     private String relativePrefix;
+    private HourTranslator hourTranslator;
+    private MinuteTranslator minuteTranslator;
 
     private final String beginning = "it's ";
 
-    public ConversationalClock(SystemTime time) {
+    public ConversationalClock(SystemTime time, HourTranslator hourTranslator, MinuteTranslator minuteTranslator) {
         this.now = time;
         this.relativeHour = time.hour();
         this.relativeMinute = -1;
@@ -24,6 +22,8 @@ public class ConversationalClock {
         this.relativePrefix = "";
         this.hour = time.hour();
         this.minute = time.minute();
+        this.hourTranslator = hourTranslator;
+        this.minuteTranslator = minuteTranslator;
     }
 
     String currentTime() {
@@ -62,10 +62,10 @@ public class ConversationalClock {
     private String sentence(String relativePrefix, int relativeMinute, String relativeSeparator, int relativeHour) {
         return new StringBuilder(beginning) //its
                 .append(relativePrefix) //almost, just after
-                .append(wordForMinute(relativeMinute)) // five
+                .append(minuteTranslator.wordForMinute(relativeMinute)) // five
                 .append(relativeSeparator) // past, to
-                .append(wordForHour(relativeHour)) // 6
-                .append(hourSuffix(relativeHour, relativeMinute)) // o'clock
+                .append(hourTranslator.wordForHour(relativeHour)) // 6
+                .append(hourTranslator.hourSuffix(relativeHour, relativeMinute)) // o'clock
                 .toString();
     }
 
@@ -76,7 +76,6 @@ public class ConversationalClock {
     }
 
     private void setRelativeMinute() {
-
         if (minute > 5 && minute <= 30) {
             relativeMinute = now.minute();
         }
@@ -88,3 +87,4 @@ public class ConversationalClock {
     }
 
 }
+
