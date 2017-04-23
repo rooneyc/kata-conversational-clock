@@ -9,19 +9,20 @@ class MinuteTranslator {
 
     static String wordForMinute(int minute) {
 
-        String minuteString = "";
-
         if (minute == 15) {
-            minuteString = "a quarter";
-        } else if (minute == 30) {
-            minuteString = "half";
-        } else {
-            if (minute >= 0) {
-                minuteString = wordForInt(minute);
-            }
+            return "a quarter";
         }
 
-        return minuteString;
+        if (minute == 30) {
+            return "half";
+        }
+
+        if (minute >= 0) {
+            return wordForInt(minute);
+        }
+
+        return "";
+
     }
 
     private static String wordForInt(int intPrimitive) {

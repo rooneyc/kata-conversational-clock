@@ -28,7 +28,9 @@ public class ConversationalClock {
 
     String currentTime() {
 
-        setRelativeTime();
+        setRelativeHour();
+
+        setRelativeMinute();
 
         setRelativePrefix();
 
@@ -67,30 +69,20 @@ public class ConversationalClock {
                 .toString();
     }
 
-    private void setRelativeTime() {
-
-        if (minute != 0 && minute < 5) {
-            relativeMinute = -1;
+    private void setRelativeHour() {
+        if (minute > 30) {
+            relativeHour = hour + 1;
         }
+    }
+
+    private void setRelativeMinute() {
 
         if (minute > 5 && minute <= 30) {
             relativeMinute = now.minute();
         }
 
-        if (minute != 0 && minute > 55) {
-            relativeMinute = -1;
-        }
-
-        if (minute > 30) {
-            relativeHour = hour + 1;
-        }
-
         if (minute > 30 && minute < 55) {
             relativeMinute = 60 - now.minute();
-        }
-
-        if (minute != 0 && minute > 55) {
-            relativeMinute = -1;
         }
 
     }
