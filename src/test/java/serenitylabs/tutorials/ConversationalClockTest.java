@@ -47,10 +47,20 @@ public class ConversationalClockTest {
 
     @TestWith({
             "08:07, it's seven past eight",
-            "17:53, it's fifty three past five",
             "03:15, it's a quarter past three",
+            "14:30, it's half past two",
     })
     public void should_tell_the_time_with_a_minute_precision(ConversationalClock clock, String expectedTime) throws Exception {
+        assertThat(clock.currentTime()).isEqualTo(expectedTime);
+        System.out.println(clock.currentTime());
+    }
+
+    @TestWith({
+            "14:50, it's ten to three",
+            "08:53, it's seven to nine",
+            "17:53, it's seven to six",
+    })
+    public void should_tell_the_time_relative_to_the_hour_that_is_closer(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
         System.out.println(clock.currentTime());
     }

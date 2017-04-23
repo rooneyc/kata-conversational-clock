@@ -9,59 +9,64 @@ public class ConversationalClock {
     private final SystemTime now;
 
     private final String prefix = "it's ";
-    private final String onTheHourSuffix = " o'clock";
 
     public ConversationalClock(SystemTime time) {
         this.now = time;
     }
 
-    public String currentTime() {
-
-        String hourString = spellOutHour();
-
-        String minuteString = spellOutMinutes();
+    String currentTime() {
 
         int hour = now.hour();
 
-        if (now.minute() == 0) {
-            if (hour != 12 && hour != 0) {
-                return prefix + hourString + " o'clock";
-            } else {
-                return prefix + hourString;
-            }
-        } else {
-            return prefix + minuteString + " past " + hourString;
-        }
+        int minute = now.minute();
 
+        if (minute == 0) {
+            String suffix = "";
+            if (hour != 12 && hour != 0) {
+                suffix = " o'clock";
+            }
+            return  prefix + spellOutHour(hour) + suffix;
+        } else {
+            if (minute <= 30) {
+                return prefix + spellOutMinutes(minute) + " past " + spellOutHour(hour);
+            } else {
+                return prefix + spellOutMinutes(60-minute) + " to " + spellOutHour(hour+1);
+            }
+        }
     }
 
-    private String spellOutMinutes() {
-
-        int minute = now.minute();
+    private String spellOutMinutes(int minute) {
 
         String minuteString;
 
         if (minute == 15) {
             minuteString = "a quarter";
+        } else if (minute == 30) {
+            minuteString = "half";
         } else {
-            RuleBasedNumberFormat ruleBasedNumberFormat
-                    = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
-
-            String minuteStringWithHyphens = ruleBasedNumberFormat.format(minute);
-
-            minuteString = minuteStringWithHyphens.replace("-", " ");
-
+            minuteString = spellOutInt(minute);
         }
 
         return minuteString;
-
     }
 
-    private String spellOutHour() {
+    private String spellOutInt(int intPrimitive) {
+
+        String minuteString;RuleBasedNumberFormat ruleBasedNumberFormat
+                = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
+
+        String minuteStringWithHyphens = ruleBasedNumberFormat.format(intPrimitive);
+
+        minuteString = minuteStringWithHyphens.replace("-", " ");
+
+        return minuteString;
+    }
+
+    private String spellOutHour(int hour) {
 
         String hourString = "";
 
-        switch (now.hour()) {
+        switch (hour) {
             case 0: hourString = "midnight";
                 break;
             case 1: hourString = "one";
