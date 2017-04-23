@@ -7,67 +7,59 @@ import static serenitylabs.tutorials.MinuteTranslator.wordForMinute;
 public class ConversationalClock {
 
     private final SystemTime now;
+    private int hour;
+    private int minute;
     private int relativeHour;
     private int relativeMinute;
+    private String relativeSeparator;
+    private String relativePrefix;
 
     private final String beginning = "it's ";
 
     public ConversationalClock(SystemTime time) {
         this.now = time;
         this.relativeHour = time.hour();
-        this.relativeMinute = time.minute();
+        this.relativeMinute = -1;
+        this.relativeSeparator = "";
+        this.relativePrefix = "";
+        this.hour = time.hour();
+        this.minute = time.minute();
     }
 
     String currentTime() {
 
-        if (now.minute() > 30) {
-            relativeHour = now.hour() + 1;
+        if (minute > 30) {
+            relativeHour = hour + 1;
         }
 
-        if (relativeMinute == 0) {
-           //return beginning + wordForHour(relativeHour) + hourSuffix(relativeHour);
-            return sentence("", -1, "", relativeHour);
-        }
-
-        if (relativeMinute > 55 || relativeMinute < 5) {
-            return lessThanFiveMinFromAnHour();
-        }
-
-        return moreThanFiveMinFromAnHour();
-    }
-
-    private String lessThanFiveMinFromAnHour() {
-        String relativePrefix = "";
-        if (relativeMinute < 5) {
+        if (minute != 0 && minute < 5) {
             relativePrefix = "just after ";
         }
-        if (relativeMinute > 55) {
-            relativePrefix = "almost ";
-        }
-        //return beginning + relativePrefix + wordForHour(relativeHour) + hourSuffix(relativeHour, relativeMinute);
-        return  sentence(relativePrefix, -1, "", relativeHour);
-    }
 
-    private String moreThanFiveMinFromAnHour() {
-        String relativeSeparator;
-        if (this.relativeMinute <= 30) {
+        if (minute != 0 && minute > 55) {
+           relativePrefix = "almost ";
+        }
+
+        if (minute > 5 && minute <= 30) {
             relativeSeparator = " past ";
-        } else {
-            relativeSeparator = " to ";
-            relativeMinute = 60 - this.relativeMinute;
-
+            relativeMinute = now.minute();
         }
-        //return beginning + wordForMinute(relativeMinute) + relativeSeparator + wordForHour(relativeHour);
-        return sentence("", relativeMinute, relativeSeparator, relativeHour);
+
+        if (minute > 30 && minute < 55) {
+            relativeSeparator = " to ";
+            relativeMinute = 60 - now.minute();
+        }
+
+        return sentence(relativePrefix, relativeMinute, relativeSeparator, relativeHour);
     }
 
     private String sentence(String relativePrefix, int relativeMinute, String relativeSeparator, int relativeHour) {
-        return new StringBuilder(beginning)
-                .append(relativePrefix)
-                .append(wordForMinute(relativeMinute))
-                .append(relativeSeparator)
-                .append(wordForHour(relativeHour))
-                .append(hourSuffix(relativeHour, relativeMinute))
+        return new StringBuilder(beginning) //its
+                .append(relativePrefix) //almost, just after
+                .append(wordForMinute(relativeMinute)) // five
+                .append(relativeSeparator) // past, to
+                .append(wordForHour(relativeHour)) // 6
+                .append(hourSuffix(relativeHour, relativeMinute)) // o'clock
                 .toString();
     }
 
