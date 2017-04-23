@@ -35,7 +35,7 @@ public class ConversationalClockTest {
         HourAndMinute time = new HourAndMinute(requiredTime);
 
         SystemTime systemTime = mock(SystemTime.class);
-        when(systemTime.hour()).thenReturn(Integer.parseInt(requiredTime.substring(0,2)));
+        when(systemTime.hour()).thenReturn(time.hour());
 
         return new ConversationalClock(systemTime);
     }
