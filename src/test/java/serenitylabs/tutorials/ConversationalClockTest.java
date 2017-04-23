@@ -14,7 +14,8 @@ public class ConversationalClockTest {
 
     @TestWith({
             "01:00, it's one o'clock",
-            "02:00, it's two o'clock"
+            "13:00, it's one o'clock",
+            "02:00, it's two o'clock",
     })
     public void should_tell_the_time_on_the_hour(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);

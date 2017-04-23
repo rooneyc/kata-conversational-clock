@@ -1,9 +1,5 @@
 package serenitylabs.tutorials;
 
-import com.ibm.icu.text.RuleBasedNumberFormat;
-
-import java.util.Locale;
-
 public class ConversationalClock {
 
     private final SystemTime now;
@@ -16,8 +12,17 @@ public class ConversationalClock {
 
         int hour = now.hour();
 
-        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
+        String hourString = "";
 
-        return "it's " + ruleBasedNumberFormat.format(hour) + " o'clock";
+        switch (hour) {
+            case 1: hourString = "one";
+                    break;
+            case 2: hourString = "two";
+                break;
+            case 13: hourString = "one";
+                break;
+        }
+
+        return "it's " + hourString + " o'clock";
     }
 }
