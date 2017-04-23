@@ -43,6 +43,15 @@ public class ConversationalClockTest {
         System.out.println(clock.currentTime());
     }
 
+    @TestWith({
+            "08:07, it's seven past eight",
+            "17:53, it's fifty three past five",
+    })
+    public void should_tell_the_time_with_a_minute_precision(ConversationalClock clock, String expectedTime) throws Exception {
+        assertThat(clock.currentTime()).isEqualTo(expectedTime);
+        System.out.println(clock.currentTime());
+    }
+
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime
      *
@@ -58,6 +67,7 @@ public class ConversationalClockTest {
 
         SystemTime systemTime = mock(SystemTime.class);
         when(systemTime.hour()).thenReturn(time.hour());
+        when(systemTime.minute()).thenReturn(time.minute());
 
         return new ConversationalClock(systemTime);
     }
