@@ -37,11 +37,23 @@ public class ConversationalClock {
 
     private String spellOutMinutes() {
 
-        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
+        int minute = now.minute();
 
-        String minuteStringWithHyphens = ruleBasedNumberFormat.format(now.minute());
+        String minuteString;
 
-        return minuteStringWithHyphens.replace("-", " ");
+        if (minute == 15) {
+            minuteString = "a quarter";
+        } else {
+            RuleBasedNumberFormat ruleBasedNumberFormat
+                    = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
+
+            String minuteStringWithHyphens = ruleBasedNumberFormat.format(minute);
+
+            minuteString = minuteStringWithHyphens.replace("-", " ");
+
+        }
+
+        return minuteString;
 
     }
 

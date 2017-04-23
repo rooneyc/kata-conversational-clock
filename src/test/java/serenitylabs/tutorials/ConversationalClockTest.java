@@ -48,6 +48,7 @@ public class ConversationalClockTest {
     @TestWith({
             "08:07, it's seven past eight",
             "17:53, it's fifty three past five",
+            "03:15, it's a quarter past three",
     })
     public void should_tell_the_time_with_a_minute_precision(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
