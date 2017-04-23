@@ -1,142 +1,62 @@
 package serenitylabs.tutorials;
 
-import com.ibm.icu.text.RuleBasedNumberFormat;
-
-import java.util.Locale;
+import static serenitylabs.tutorials.HourTranslator.hourSuffix;
+import static serenitylabs.tutorials.HourTranslator.wordForHour;
+import static serenitylabs.tutorials.MinuteTranslator.wordForMinute;
 
 public class ConversationalClock {
 
     private final SystemTime now;
+    private final int hour;
+    private final int minute;
 
-    private final String prefix = "it's ";
+    private final String beginning = "it's ";
 
     public ConversationalClock(SystemTime time) {
         this.now = time;
+        this.hour = time.hour();
+        this.minute = time.minute();
     }
 
     String currentTime() {
 
-        int hour = now.hour();
-
-        int minute = now.minute();
-
         if (minute == 0) {
-            return  prefix + spellOutHour(hour) + getSuffix(hour);
-        } else {
-            if (minute > 55 || minute < 5) {
-                return LessThanFiveMinFromAnHour(hour, minute);
-            }
-            return MoreThanFiveMinFromAnHour(hour, minute);
+            return beginning + wordForHour(hour) + hourSuffix(hour);
         }
+
+        if (minute > 55 || minute < 5) {
+            return lessThanFiveMinFromAnHour();
+        }
+
+        return moreThanFiveMinFromAnHour();
     }
 
-    private String LessThanFiveMinFromAnHour(int hour, int minute) {
-        String prefixAndHoursSeparator = "";
-        if (minute > 55) {
-            prefixAndHoursSeparator = "almost ";
-            hour += 1;
-        }
+    private String lessThanFiveMinFromAnHour() {
+        String relativePrefix = "";
+        int relativeHour = hour;
         if (minute < 5) {
-            prefixAndHoursSeparator = "just after ";
+            relativePrefix = "just after ";
         }
-        return prefix + prefixAndHoursSeparator + spellOutHour(hour) + getSuffix(hour);
+        if (minute > 55) {
+            relativePrefix = "almost ";
+            relativeHour = hour + 1;
+        }
+        return beginning + relativePrefix + wordForHour(relativeHour) + hourSuffix(relativeHour);
     }
 
-    private String MoreThanFiveMinFromAnHour(int hour, int minute) {
-        String minutesAndHoursSeparator;
+    private String moreThanFiveMinFromAnHour() {
+        String relativeSeparator;
+        int relativeHour = hour;
+        int relativeMinute = minute;
         if (minute <= 30) {
-            minutesAndHoursSeparator = " past ";
+            relativeSeparator = " past ";
         } else {
-            minutesAndHoursSeparator = " to ";
-            hour += 1;
-            minute = 60 - minute;
+            relativeSeparator = " to ";
+            relativeHour = hour + 1;
+            relativeMinute = 60 - minute;
 
         }
-        return prefix + spellOutMinutes(minute) + minutesAndHoursSeparator + spellOutHour(hour);
-    }
-
-    private String getSuffix(int hour) {
-        if (hour != 12 && hour != 0) {
-            return " o'clock";
-        }
-        return  "";
-    }
-
-    private String spellOutMinutes(int minute) {
-
-        String minuteString;
-
-        if (minute == 15) {
-            minuteString = "a quarter";
-        } else if (minute == 30) {
-            minuteString = "half";
-        } else {
-            minuteString = spellOutInt(minute);
-        }
-
-        return minuteString;
-    }
-
-    private String spellOutInt(int intPrimitive) {
-
-        String intString;
-
-        RuleBasedNumberFormat ruleBasedNumberFormat
-                = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
-
-        String intStringWithHyphens = ruleBasedNumberFormat.format(intPrimitive);
-
-        intString = intStringWithHyphens.replace("-", " ");
-
-        return intString;
-    }
-
-    private String spellOutHour(int hour) {
-
-        String hourString = "";
-
-        if (hour == 0) {
-            hourString = "midnight";
-        }
-        if (hour == 1 || hour == 13) {
-            hourString = "one";
-        }
-        if (hour == 2 || hour == 14) {
-            hourString = "two";
-        }
-        if (hour == 3 || hour == 15) {
-            hourString = "three";
-        }
-        if (hour == 4 || hour == 16) {
-            hourString = "four";
-        }
-        if (hour == 5 || hour == 17) {
-            hourString = "five";
-        }
-        if (hour == 6 || hour == 18) {
-            hourString = "six";
-        }
-        if (hour == 7 || hour == 19) {
-            hourString = "seven";
-        }
-        if (hour == 8 || hour == 20) {
-            hourString = "eight";
-        }
-        if (hour == 9 || hour == 21) {
-            hourString = "nine";
-        }
-        if (hour == 10 || hour == 22) {
-            hourString = "ten";
-        }
-        if (hour == 11 || hour == 23) {
-            hourString = "eleven";
-        }
-        if (hour == 12) {
-            hourString = "noon";
-        }
-
-        return hourString;
-
+        return beginning + wordForMinute(relativeMinute) + relativeSeparator + wordForHour(relativeHour);
     }
 
 }

@@ -75,7 +75,6 @@ public class ConversationalClockTest {
         System.out.println(clock.currentTime());
     }
 
-
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime
      *
