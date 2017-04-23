@@ -27,8 +27,16 @@ public class ConversationalClock {
             }
             return  prefix + spellOutHour(hour) + suffix;
         } else {
+            String suffix = "";
+            if (hour != 12 && hour != 0) {
+                suffix = " o'clock";
+            }
+            if (minute > 55) {
+                hour = hour + 1;
+                return prefix + "almost " + spellOutHour(hour) + suffix;
+            }
             if (minute < 5) {
-
+                return prefix + "just after " + spellOutHour(hour) + suffix;
             }
 
             String betweenMinAndHours;
