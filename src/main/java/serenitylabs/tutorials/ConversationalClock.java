@@ -28,31 +28,33 @@ public class ConversationalClock {
 
     String currentTime() {
 
-        if (minute != 0 && minute < 5) {
-            relativePrefix = "just after ";
-            relativeMinute = -1;
-        }
+        setRelativeTime();
 
-        if (minute != 0 && minute > 55) {
-           relativePrefix = "almost ";
-            relativeMinute = -1;
-        }
+        setRelativePrefix();
 
-        if (minute > 30) {
-            relativeHour = hour + 1;
-        }
+        setRelativeSeperator();
 
+        return sentence(relativePrefix, relativeMinute, relativeSeparator, relativeHour);
+    }
+
+    private void setRelativeSeperator() {
         if (minute > 5 && minute <= 30) {
             relativeSeparator = " past ";
-            relativeMinute = now.minute();
         }
 
         if (minute > 30 && minute < 55) {
             relativeSeparator = " to ";
-            relativeMinute = 60 - now.minute();
+        }
+    }
+
+    private void setRelativePrefix() {
+        if (minute != 0 && minute < 5) {
+            relativePrefix = "just after ";
         }
 
-        return sentence(relativePrefix, relativeMinute, relativeSeparator, relativeHour);
+        if (minute != 0 && minute > 55) {
+           relativePrefix = "almost ";
+        }
     }
 
     private String sentence(String relativePrefix, int relativeMinute, String relativeSeparator, int relativeHour) {
@@ -63,6 +65,34 @@ public class ConversationalClock {
                 .append(wordForHour(relativeHour)) // 6
                 .append(hourSuffix(relativeHour, relativeMinute)) // o'clock
                 .toString();
+    }
+
+    private void setRelativeTime() {
+
+        if (minute != 0 && minute < 5) {
+            relativeMinute = -1;
+        }
+
+        if (minute > 5 && minute <= 30) {
+            relativeMinute = now.minute();
+        }
+
+        if (minute != 0 && minute > 55) {
+            relativeMinute = -1;
+        }
+
+        if (minute > 30) {
+            relativeHour = hour + 1;
+        }
+
+        if (minute > 30 && minute < 55) {
+            relativeMinute = 60 - now.minute();
+        }
+
+        if (minute != 0 && minute > 55) {
+            relativeMinute = -1;
+        }
+
     }
 
 }
