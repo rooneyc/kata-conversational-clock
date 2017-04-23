@@ -9,6 +9,7 @@ public class ConversationalClock {
     private final SystemTime now;
 
     private final String prefix = "it's ";
+    private final String onTheHourSuffix = " o'clock";
 
     public ConversationalClock(SystemTime time) {
         this.now = time;
@@ -16,11 +17,39 @@ public class ConversationalClock {
 
     public String currentTime() {
 
+        String hourString = spellOutHour();
+
+        String minuteString = spellOutMinutes();
+
         int hour = now.hour();
+
+        if (now.minute() == 0) {
+            if (hour != 12 && hour != 0) {
+                return prefix + hourString + " o'clock";
+            } else {
+                return prefix + hourString;
+            }
+        } else {
+            return prefix + minuteString + " past " + hourString;
+        }
+
+    }
+
+    private String spellOutMinutes() {
+
+        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
+
+        String minuteStringWithHyphens = ruleBasedNumberFormat.format(now.minute());
+
+        return minuteStringWithHyphens.replace("-", " ");
+
+    }
+
+    private String spellOutHour() {
 
         String hourString = "";
 
-        switch (hour) {
+        switch (now.hour()) {
             case 0: hourString = "midnight";
                 break;
             case 1: hourString = "one";
@@ -71,22 +100,8 @@ public class ConversationalClock {
                 break;
         }
 
-        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("EN", ""), RuleBasedNumberFormat.SPELLOUT );
-
-        String minuteString = ruleBasedNumberFormat.format(now.minute()).replace("-", " ");
-
-        if (now.minute() == 0) {
-            if (hour != 12 && hour != 0) {
-                return prefix + hourString + " o'clock";
-            } else {
-                return prefix + hourString;
-            }
-        } else {
-            return prefix + minuteString + " past " + hourString;
-        }
+        return hourString;
 
     }
-
-
 
 }
