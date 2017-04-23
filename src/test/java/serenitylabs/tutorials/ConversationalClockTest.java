@@ -59,11 +59,22 @@ public class ConversationalClockTest {
             "14:50, it's ten to three",
             "08:53, it's seven to nine",
             "17:53, it's seven to six",
+            "06:45, it's a quarter to seven",
     })
     public void should_tell_the_time_relative_to_the_hour_that_is_closer(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
         System.out.println(clock.currentTime());
     }
+
+    @TestWith({
+            "13:58, it's almost two o'clock",
+            "14:01, it's just after two o'clock",
+    })
+    public void if_within_5_minutes_of_hour_should_return_fuzzy_response(ConversationalClock clock, String expectedTime) throws Exception {
+        assertThat(clock.currentTime()).isEqualTo(expectedTime);
+        System.out.println(clock.currentTime());
+    }
+
 
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime

@@ -27,11 +27,19 @@ public class ConversationalClock {
             }
             return  prefix + spellOutHour(hour) + suffix;
         } else {
-            if (minute <= 30) {
-                return prefix + spellOutMinutes(minute) + " past " + spellOutHour(hour);
-            } else {
-                return prefix + spellOutMinutes(60-minute) + " to " + spellOutHour(hour+1);
+            if (minute < 5) {
+
             }
+
+            String betweenMinAndHours;
+            if (minute <= 30) {
+                betweenMinAndHours = " past ";
+            } else {
+                betweenMinAndHours = " to ";
+                minute = 60 - minute;
+                hour = hour + 1;
+            }
+            return prefix + spellOutMinutes(minute) + betweenMinAndHours + spellOutHour(hour);
         }
     }
 
