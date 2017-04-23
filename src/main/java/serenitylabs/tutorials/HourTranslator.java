@@ -50,10 +50,12 @@ class HourTranslator {
     }
 
     String hourSuffix(int hour, int minute) {
+
         if ((minute == 0 || minute < 5 || minute > 55)
             && (hour != 12 && hour != 0)) {
             return " o'clock";
         }
+
         return  "";
     }
 

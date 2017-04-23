@@ -42,6 +42,7 @@ class MinuteTranslator {
     }
 
     String relativeSeparator(int minute) {
+
         if (minute > 5 && minute <= 30) {
             return " past ";
         }
@@ -54,6 +55,7 @@ class MinuteTranslator {
     }
 
     String relativePrefix(int minute) {
+
         if (minute != 0 && minute < 5) {
             return "just after ";
         }

@@ -17,30 +17,32 @@ public class ConversationalClock {
         this.hourTranslator = hourTranslator;
         this.minuteTranslator = minuteTranslator;
 
-        this.relativeHour = time.hour();
-        this.relativeMinute = -1;
         this.hour = time.hour();
         this.minute = time.minute();
 
-        setRelativeHour();
-
-        setRelativeMinute();
+        this.relativeHour = relativeHour();
+        this.relativeMinute = relativeMinute();
     }
 
-    private void setRelativeHour() {
+    private int relativeHour() {
+
         if (minute > 30) {
-            relativeHour = hour + 1;
+            return hour + 1;
         }
+        return hour;
     }
 
-    private void setRelativeMinute() {
+    private int relativeMinute() {
+
         if (minute > 5 && minute <= 30) {
-            relativeMinute = minute;
+            return minute;
         }
 
         if (minute > 30 && minute < 55) {
-            relativeMinute = 60 - minute;
+            return 60 - minute;
         }
+
+        return -1;
     }
 
     String currentTime() {
@@ -52,7 +54,6 @@ public class ConversationalClock {
                 .append(hourTranslator.wordForHour(relativeHour))                //6, noon, midnight
                 .append(hourTranslator.hourSuffix(relativeHour, relativeMinute)) //o'clock
                 .toString();
-
     }
 
 }
