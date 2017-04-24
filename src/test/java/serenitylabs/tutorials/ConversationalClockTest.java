@@ -75,6 +75,10 @@ public class ConversationalClockTest {
         System.out.println(clock.currentTime());
     }
 
+    //TODO would prefer if relativeMinute was minutesTo
+    //TODO Don't like how hourSuffix needs a minute but is in hour translator
+    //TODO Duplication of (minute > 5 && minute <= 30) in relativeMinute() and  relativeSeparator(int minute)
+
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime
      *

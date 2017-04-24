@@ -25,20 +25,16 @@ class MinuteTranslator {
 
     }
 
-    private String wordForInt(int intPrimitive) {
-
-        String intString;
+    private String wordForInt(int primitiveInt) {
 
         RuleBasedNumberFormat ruleBasedNumberFormat
                 = new RuleBasedNumberFormat(
                         new Locale("EN", ""),
                         RuleBasedNumberFormat.SPELLOUT );
 
-        String intStringWithHyphens = ruleBasedNumberFormat.format(intPrimitive);
+        String intStringWithHyphens = ruleBasedNumberFormat.format(primitiveInt); //twenty-four
 
-        intString = intStringWithHyphens.replace("-", " ");
-
-        return intString;
+        return intStringWithHyphens.replace("-", " ");          //twenty four
     }
 
     String relativeSeparator(int minute) {

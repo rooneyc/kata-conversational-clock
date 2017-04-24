@@ -3,8 +3,8 @@ package serenitylabs.tutorials;
 public class ConversationalClock {
 
     private final SystemTime now;
-    private int hour;
-    private int minute;
+    private int currentHour;
+    private int minutesPast;
     private int nextHour;
     private int relativeMinute;
     private HourTranslator hourTranslator;
@@ -17,8 +17,8 @@ public class ConversationalClock {
         this.hourTranslator = hourTranslator;
         this.minuteTranslator = minuteTranslator;
 
-        this.hour = time.hour();
-        this.minute = time.minute();
+        this.currentHour = time.hour();
+        this.minutesPast = time.minute();
 
         this.nextHour = nextHour();
         this.relativeMinute = relativeMinute();
@@ -26,20 +26,20 @@ public class ConversationalClock {
 
     private int nextHour() {
 
-        if (minute > 30) {
-            return hour + 1;
+        if (minutesPast > 30) {
+            return currentHour + 1;
         }
-        return hour;
+        return currentHour;
     }
 
     private int relativeMinute() {
 
-        if (minute > 5 && minute <= 30) {
-            return minute;
+        if (minutesPast > 5 && minutesPast <= 30) {
+            return minutesPast;
         }
 
-        if (minute > 30 && minute < 55) {
-            return 60 - minute;
+        if (minutesPast > 30 && minutesPast < 55) {
+            return 60 - minutesPast;
         }
 
         return -1;
@@ -48,9 +48,9 @@ public class ConversationalClock {
     String currentTime() {
 
         return new StringBuilder(beginning)                                      //its
-                .append(minuteTranslator.relativePrefix(minute))                 //almost, just after
+                .append(minuteTranslator.relativePrefix(minutesPast))            //almost, just after
                 .append(minuteTranslator.wordForMinute(relativeMinute))          //five
-                .append(minuteTranslator.relativeSeparator(minute))              //past, to
+                .append(minuteTranslator.relativeSeparator(minutesPast))         //past, to
                 .append(hourTranslator.wordForHour(nextHour))                    //6, noon, midnight
                 .append(hourTranslator.hourSuffix(nextHour, relativeMinute))     //o'clock
                 .toString();
