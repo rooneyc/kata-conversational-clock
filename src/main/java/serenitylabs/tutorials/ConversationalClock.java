@@ -5,7 +5,7 @@ public class ConversationalClock {
     private final SystemTime now;
     private int hour;
     private int minute;
-    private int relativeHour;
+    private int nextHour;
     private int relativeMinute;
     private HourTranslator hourTranslator;
     private MinuteTranslator minuteTranslator;
@@ -20,11 +20,11 @@ public class ConversationalClock {
         this.hour = time.hour();
         this.minute = time.minute();
 
-        this.relativeHour = relativeHour();
+        this.nextHour = nextHour();
         this.relativeMinute = relativeMinute();
     }
 
-    private int relativeHour() {
+    private int nextHour() {
 
         if (minute > 30) {
             return hour + 1;
@@ -51,8 +51,8 @@ public class ConversationalClock {
                 .append(minuteTranslator.relativePrefix(minute))                 //almost, just after
                 .append(minuteTranslator.wordForMinute(relativeMinute))          //five
                 .append(minuteTranslator.relativeSeparator(minute))              //past, to
-                .append(hourTranslator.wordForHour(relativeHour))                //6, noon, midnight
-                .append(hourTranslator.hourSuffix(relativeHour, relativeMinute)) //o'clock
+                .append(hourTranslator.wordForHour(nextHour))                    //6, noon, midnight
+                .append(hourTranslator.hourSuffix(nextHour, relativeMinute))     //o'clock
                 .toString();
     }
 
