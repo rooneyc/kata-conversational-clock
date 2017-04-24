@@ -78,6 +78,7 @@ public class ConversationalClockTest {
     //TODO would prefer if relativeMinute was minutesTo
     //TODO Don't like how hourSuffix needs a minute but is in hour translator
     //TODO Duplication of (minute > 5 && minute <= 30) in relativeMinute() and  relativeSeparator(int minute)
+    //TODO Hate that -1 sentinel
 
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime
