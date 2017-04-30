@@ -9,6 +9,14 @@ class MinuteTranslator {
 
     String wordForMinute(int minute) {
 
+        if (minute < 5) {
+            return "";
+        }
+
+        if (minute > 55) {
+            return "";
+        }
+
         if (minute == 15) {
             return "a quarter";
         }
@@ -39,7 +47,7 @@ class MinuteTranslator {
 
     String relativeSeparator(int minute) {
 
-        if (minute > 5 && minute <= 30) {
+        if (minute >= 5 && minute <= 30) {
             return " past ";
         }
 
@@ -50,7 +58,7 @@ class MinuteTranslator {
         return "";
     }
 
-    String relativePrefix(int minute) {
+    String approxHourPrefix(int minute) {
 
         if (minute != 0 && minute < 5) {
             return "just after ";
@@ -63,5 +71,18 @@ class MinuteTranslator {
         return "";
     }
 
+    String minutesQuantifier(int minutesPast) {
+
+        if ((minutesPast == 0)
+        || ((minutesPast % 5) == 0)
+        || minutesPast < 5
+        || minutesPast > 55)
+        {
+            return "";
+        }
+
+        return " minutes";
+
+    }
 }
 

@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 public class ConversationalClockTest {
 
     @TestWith({
-            "00:00, it's midnight",
             "01:00, it's one o'clock",
             "02:00, it's two o'clock",
             "03:00, it's three o'clock",
@@ -27,7 +26,6 @@ public class ConversationalClockTest {
             "09:00, it's nine o'clock",
             "10:00, it's ten o'clock",
             "11:00, it's eleven o'clock",
-            "12:00, it's noon",
             "13:00, it's one o'clock",
             "14:00, it's two o'clock",
             "15:00, it's three o'clock",
@@ -46,9 +44,18 @@ public class ConversationalClockTest {
     }
 
     @TestWith({
-            "08:07, it's seven past eight",
-            "03:15, it's a quarter past three",
-            "14:30, it's half past two",
+            "00:00, it's midnight",
+            "12:00, it's noon",
+    })
+    public void should_know_about_noon_and_midnight(ConversationalClock clock, String expectedTime) throws Exception {
+        assertThat(clock.currentTime()).isEqualTo(expectedTime);
+        System.out.println(clock.currentTime());
+    }
+
+    @TestWith({
+            "08:07, it's seven minutes past eight",
+            "18:28, it's twenty eight minutes past six",
+
     })
     public void should_tell_the_time_with_a_minute_precision(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
@@ -56,9 +63,19 @@ public class ConversationalClockTest {
     }
 
     @TestWith({
-            "14:50, it's ten to three",
-            "08:53, it's seven to nine",
-            "17:53, it's seven to six",
+            "18:05, it's five past six",
+            "15:10, it's ten past three",
+            "03:15, it's a quarter past three",
+            "14:30, it's half past two",
+    })
+    public void should_tell_the_time_in_multiples_of_five(ConversationalClock clock, String expectedTime) throws Exception {
+        assertThat(clock.currentTime()).isEqualTo(expectedTime);
+        System.out.println(clock.currentTime());
+    }
+
+    @TestWith({
+            "08:53, it's seven minutes to nine",
+            "17:51, it's nine minutes to six",
             "06:45, it's a quarter to seven",
     })
     public void should_tell_the_time_relative_to_the_hour_that_is_closer(ConversationalClock clock, String expectedTime) throws Exception {
@@ -75,10 +92,7 @@ public class ConversationalClockTest {
         System.out.println(clock.currentTime());
     }
 
-    //TODO would prefer if relativeMinute was minutesTo
-    //TODO Don't like how hourSuffix needs a minute but is in hour translator
     //TODO Duplication of (minute > 5 && minute <= 30) in relativeMinute() and  relativeSeparator(int minute)
-    //TODO Hate that -1 sentinel
 
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime

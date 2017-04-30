@@ -5,14 +5,17 @@ public class ConversationalClock {
     private final SystemTime now;
     private int currentHour;
     private int minutesPast;
-    private int nextHour;
-    private int relativeMinute;
+    private int closestHour;
+    private int minutesFromClosestHour;
     private HourTranslator hourTranslator;
     private MinuteTranslator minuteTranslator;
 
     private final String beginning = "it's ";
 
-    public ConversationalClock(SystemTime time, HourTranslator hourTranslator, MinuteTranslator minuteTranslator) {
+    public ConversationalClock(SystemTime time,
+                               HourTranslator hourTranslator,
+                               MinuteTranslator minuteTranslator) {
+
         this.now = time;
         this.hourTranslator = hourTranslator;
         this.minuteTranslator = minuteTranslator;
@@ -20,11 +23,11 @@ public class ConversationalClock {
         this.currentHour = time.hour();
         this.minutesPast = time.minute();
 
-        this.nextHour = nextHour();
-        this.relativeMinute = relativeMinute();
+        this.closestHour = closestHour();
+        this.minutesFromClosestHour = minutesFromClosestHour();
     }
 
-    private int nextHour() {
+    private int closestHour() {
 
         if (minutesPast > 30) {
             return currentHour + 1;
@@ -32,27 +35,37 @@ public class ConversationalClock {
         return currentHour;
     }
 
-    private int relativeMinute() {
+    private int minutesFromClosestHour() {
 
-        if (minutesPast > 5 && minutesPast <= 30) {
-            return minutesPast;
-        }
-
-        if (minutesPast > 30 && minutesPast < 55) {
+        if (minutesPast > 30) {
             return 60 - minutesPast;
         }
 
-        return -1;
+        return minutesPast;
+
+    }
+
+    String hourSuffix(int hour, int minute) {
+
+        if ((minute == 0 || minute < 5  || minute > 55)
+                &&
+            (hour != 12 && hour != 0))
+        {
+            return " o'clock";
+        }
+
+        return  "";
     }
 
     String currentTime() {
 
         return new StringBuilder(beginning)                                      //its
-                .append(minuteTranslator.relativePrefix(minutesPast))            //almost, just after
-                .append(minuteTranslator.wordForMinute(relativeMinute))          //five
+                .append(minuteTranslator.approxHourPrefix(minutesPast))          //almost, just after
+                .append(minuteTranslator.wordForMinute(minutesFromClosestHour))  //five, seventeen
+                .append(minuteTranslator.minutesQuantifier(minutesPast))         //minutes
                 .append(minuteTranslator.relativeSeparator(minutesPast))         //past, to
-                .append(hourTranslator.wordForHour(nextHour))                    //6, noon, midnight
-                .append(hourTranslator.hourSuffix(nextHour, relativeMinute))     //o'clock
+                .append(hourTranslator.wordForHour(closestHour))                 //6, noon, midnight
+                .append(hourSuffix(closestHour, minutesFromClosestHour))         //o'clock
                 .toString();
     }
 
