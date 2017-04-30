@@ -52,6 +52,4 @@ class HourTranslator {
         return hourString;
     }
 
-
-
 }

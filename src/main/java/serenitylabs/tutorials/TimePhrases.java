@@ -54,5 +54,4 @@ class TimePhrases {
         return (minute % 5) == 0;
     }
 
-
 }
