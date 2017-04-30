@@ -1,5 +1,7 @@
 package serenitylabs.tutorials;
 
+import static serenitylabs.tutorials.TimePhrases.*;
+
 public class ConversationalClock {
 
     private final SystemTime now;
@@ -29,7 +31,7 @@ public class ConversationalClock {
 
     private int closestHour() {
 
-        if (minutesPast > 30) {
+        if (inSecondHalf(minutesPast)) {
             return currentHour + 1;
         }
         return currentHour;
@@ -37,7 +39,7 @@ public class ConversationalClock {
 
     private int minutesFromClosestHour() {
 
-        if (minutesPast > 30) {
+        if (inSecondHalf(minutesPast)) {
             return 60 - minutesPast;
         }
 
@@ -45,12 +47,10 @@ public class ConversationalClock {
 
     }
 
-    String hourSuffix(int hour, int minute) {
+    private String hourSuffix(int hour, int minute) {
 
-        if ((minute == 0 || minute < 5  || minute > 55)
-                &&
-            (hour != 12 && hour != 0))
-        {
+        if ((inFirstFiveMin(minute) || inLastFiveMin(minute))
+                && notNoon(hour) && notMidnight(hour)) {
             return " o'clock";
         }
 
@@ -59,14 +59,14 @@ public class ConversationalClock {
 
     String currentTime() {
 
-        return new StringBuilder(beginning)                                      //its
-                .append(minuteTranslator.approxHourPrefix(minutesPast))          //almost, just after
-                .append(minuteTranslator.wordForMinute(minutesFromClosestHour))  //five, seventeen
-                .append(minuteTranslator.minutesQuantifier(minutesPast))         //minutes
-                .append(minuteTranslator.relativeSeparator(minutesPast))         //past, to
-                .append(hourTranslator.wordForHour(closestHour))                 //6, noon, midnight
-                .append(hourSuffix(closestHour, minutesFromClosestHour))         //o'clock
-                .toString();
+        return beginning                                                  //its
+                + minuteTranslator.approxHourPrefix(minutesPast)          //almost, just after
+                + minuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
+                + minuteTranslator.minutesQuantifier(minutesPast)         //minutes
+                + minuteTranslator.relativeSeparator(minutesPast)         //past, to
+                + hourTranslator.wordForHour(closestHour)                 //6, noon, midnight
+                + hourSuffix(closestHour, minutesFromClosestHour)         //o'clock
+        ;
     }
 
 }

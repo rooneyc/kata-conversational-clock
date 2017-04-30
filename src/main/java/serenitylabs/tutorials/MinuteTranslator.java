@@ -5,15 +5,17 @@ import com.ibm.icu.text.RuleBasedNumberFormat;
 
 import java.util.Locale;
 
+import static serenitylabs.tutorials.TimePhrases.*;
+
 class MinuteTranslator {
 
     String wordForMinute(int minute) {
 
-        if (minute < 5) {
+        if (inFirstFiveMin(minute)) {
             return "";
         }
 
-        if (minute > 55) {
+        if (inLastFiveMin(minute)) {
             return "";
         }
 
@@ -25,7 +27,7 @@ class MinuteTranslator {
             return "half";
         }
 
-        if (minute >= 0) {
+        if (notOnTheHour(minute)) {
             return wordForInt(minute);
         }
 
@@ -47,11 +49,11 @@ class MinuteTranslator {
 
     String relativeSeparator(int minute) {
 
-        if (minute >= 5 && minute <= 30) {
+        if (inFirstHalf(minute) && notInFirstFiveMin(minute)) {
             return " past ";
         }
 
-        if (minute > 30 && minute < 55) {
+        if (inSecondHalf(minute) && notInLastFiveMin(minute)) {
             return " to ";
         }
 
@@ -60,11 +62,11 @@ class MinuteTranslator {
 
     String approxHourPrefix(int minute) {
 
-        if (minute != 0 && minute < 5) {
+        if (notOnTheHour(minute) && inFirstFiveMin(minute)) {
             return "just after ";
         }
 
-        if (minute != 0 && minute > 55) {
+        if (notOnTheHour(minute) && inLastFiveMin(minute)) {
             return "almost ";
         }
 
@@ -73,10 +75,10 @@ class MinuteTranslator {
 
     String minutesQuantifier(int minutesPast) {
 
-        if ((minutesPast == 0)
-        || ((minutesPast % 5) == 0)
-        || minutesPast < 5
-        || minutesPast > 55)
+        if ((onTheHour(minutesPast))
+        || multipleOfFive(minutesPast)
+        || inFirstFiveMin(minutesPast)
+        || inLastFiveMin(minutesPast))
         {
             return "";
         }

@@ -1,12 +1,15 @@
 package serenitylabs.tutorials;
 
+import static serenitylabs.tutorials.TimePhrases.midnight;
+import static serenitylabs.tutorials.TimePhrases.noon;
+
 class HourTranslator {
 
     String wordForHour(int hour) {
 
         String hourString = "";
 
-        if (hour == 0) {
+        if (midnight(hour)) {
             hourString = "midnight";
         }
         if (hour == 1 || hour == 13) {
@@ -42,7 +45,7 @@ class HourTranslator {
         if (hour == 11 || hour == 23) {
             hourString = "eleven";
         }
-        if (hour == 12) {
+        if (noon(hour)) {
             hourString = "noon";
         }
 

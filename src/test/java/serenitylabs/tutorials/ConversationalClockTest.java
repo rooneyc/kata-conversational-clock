@@ -77,6 +77,7 @@ public class ConversationalClockTest {
             "08:53, it's seven minutes to nine",
             "17:51, it's nine minutes to six",
             "06:45, it's a quarter to seven",
+            "20:55, it's five to nine"
     })
     public void should_tell_the_time_relative_to_the_hour_that_is_closer(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
@@ -91,8 +92,6 @@ public class ConversationalClockTest {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
         System.out.println(clock.currentTime());
     }
-
-    //TODO Duplication of (minute > 5 && minute <= 30) in relativeMinute() and  relativeSeparator(int minute)
 
     /**
      * Creates an instance of a ConversationalClock, set to a requiredTime
@@ -111,6 +110,7 @@ public class ConversationalClockTest {
         when(systemTime.hour()).thenReturn(time.hour());
         when(systemTime.minute()).thenReturn(time.minute());
 
-        return new ConversationalClock(systemTime, new HourTranslator(), new MinuteTranslator());
+        return new ConversationalClock(systemTime,
+                new HourTranslator(), new MinuteTranslator());
     }
 }
