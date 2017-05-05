@@ -4,11 +4,7 @@ import static serenitylabs.tutorials.TimePhrases.*;
 
 public class ConversationalClock {
 
-    private final SystemTime now;
-    private int currentHour;
-    private int minutesPast;
-    private int closestHour;
-    private int minutesFromClosestHour;
+    private RelativeTime relativeTime;
     private HourTranslator hourTranslator;
     private MinuteTranslator minuteTranslator;
 
@@ -18,33 +14,9 @@ public class ConversationalClock {
                                HourTranslator hourTranslator,
                                MinuteTranslator minuteTranslator) {
 
-        this.now = time;
+        this.relativeTime = new RelativeTime(time);
         this.hourTranslator = hourTranslator;
         this.minuteTranslator = minuteTranslator;
-
-        this.currentHour = time.hour();
-        this.minutesPast = time.minute();
-
-        this.closestHour = closestHour();
-        this.minutesFromClosestHour = minutesFromClosestHour();
-    }
-
-    private int closestHour() {
-
-        if (inSecondHalf(minutesPast)) {
-            return currentHour + 1;
-        }
-        return currentHour;
-    }
-
-    private int minutesFromClosestHour() {
-
-        if (inSecondHalf(minutesPast)) {
-            return 60 - minutesPast;
-        }
-
-        return minutesPast;
-
     }
 
     private String hourSuffix(int hour, int minute) {
@@ -58,6 +30,10 @@ public class ConversationalClock {
     }
 
     String currentTime() {
+
+        int minutesPast = relativeTime.minutesPast();
+        int closestHour = relativeTime.closestHour();
+        int minutesFromClosestHour = relativeTime.minutesFromClosestHour();
 
         return beginning                                                  //its
                 + minuteTranslator.approxHourPrefix(minutesPast)          //almost, just after

@@ -3,13 +3,13 @@ package serenitylabs.tutorials;
 import com.googlecode.zohhak.api.Coercion;
 import com.googlecode.zohhak.api.TestWith;
 import com.googlecode.zohhak.api.runners.ZohhakRunner;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(ZohhakRunner.class)
 public class ConversationalClockTest {
@@ -91,6 +91,43 @@ public class ConversationalClockTest {
     public void if_within_5_minutes_of_hour_should_return_fuzzy_response(ConversationalClock clock, String expectedTime) throws Exception {
         assertThat(clock.currentTime()).isEqualTo(expectedTime);
         System.out.println(clock.currentTime());
+    }
+
+    @Test
+    public void should_only_get_system_time_once() throws Exception {
+
+        //Given
+        SystemTime systemTime = mock(SystemTime.class);
+        when(systemTime.hour()).thenReturn(12);
+        when(systemTime.minute()).thenReturn(13);
+
+        ConversationalClock clock = new ConversationalClock(systemTime,
+                new HourTranslator(), new MinuteTranslator());
+
+        //When
+        clock.currentTime();
+
+        //Then
+        verify(systemTime, times(1)).minute();
+        verify(systemTime, times(1)).hour();
+    }
+
+
+    @Test
+    public void clock_should_not_be_frozen_in_time() throws Exception {
+
+        //Given
+        SystemTime systemTime = mock(SystemTime.class);
+        ConversationalClock clock = new ConversationalClock(systemTime,
+                new HourTranslator(), new MinuteTranslator());
+
+        when(systemTime.hour()).thenReturn(12);
+        when(systemTime.minute()).thenReturn(13);
+        assertThat(clock.currentTime()).isEqualTo("it's thirteen minutes past noon");
+
+        when(systemTime.hour()).thenReturn(12);
+        when(systemTime.minute()).thenReturn(14);
+        assertThat(clock.currentTime()).isEqualTo("it's fourteen minutes past noon");
     }
 
     /**
