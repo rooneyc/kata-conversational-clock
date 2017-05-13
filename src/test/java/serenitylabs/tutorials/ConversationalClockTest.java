@@ -121,7 +121,7 @@ public class ConversationalClockTest {
         SystemTime systemTime = mock(SystemTime.class);
         ConversationalClock clock = new ConversationalClock(systemTime,
                 new HourTranslator(), new MinuteTranslator());
-
+        //And
         given(systemTime.hour()).willReturn(12);
         given(systemTime.minute()).willReturn(13);
         //Then
@@ -131,6 +131,21 @@ public class ConversationalClockTest {
         given(systemTime.minute()).willReturn(14);
         //Then
         assertThat(clock.currentTime()).isEqualTo("it's fourteen minutes past noon");
+    }
+
+    @Test
+    public void should_speak_the_time_at_the_moment_asked() throws Exception {
+
+        //Given
+        SystemTime systemTime = mock(SystemTime.class);
+        ConversationalClock clock = new ConversationalClock(systemTime,
+                new HourTranslator(), new MinuteTranslator());
+
+        given(systemTime.hour()).willReturn(12);
+        given(systemTime.minute()).willReturn(15, 16);
+
+        //Then
+        assertThat(clock.currentTime()).isEqualTo("it's quarter past noon");
     }
 
     /**
