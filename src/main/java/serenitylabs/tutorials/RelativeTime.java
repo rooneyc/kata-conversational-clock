@@ -34,10 +34,9 @@ class RelativeTime {
         }
 
         return minutesPast;
-
     }
 
-    static String relativeSeparator(int minute) {
+    String relativeSeparator(int minute) {
 
         if (inFirstHalf(minute) && notInFirstFiveMin(minute)) {
             return " past ";
@@ -50,7 +49,7 @@ class RelativeTime {
         return "";
     }
 
-    static String approxHourPrefix(int minute) {
+    String approxHourPrefix(int minute) {
 
         if (notOnTheHour(minute) && inFirstFiveMin(minute)) {
             return "just after ";
@@ -63,12 +62,12 @@ class RelativeTime {
         return "";
     }
 
-    static String minutesQuantifier(int minutesPast) {
+    String minutesQuantifier(int minutesPast) {
 
         if ((onTheHour(minutesPast))
-                || multipleOfFive(minutesPast)
-                || inFirstFiveMin(minutesPast)
-                || inLastFiveMin(minutesPast))
+          || multipleOfFive(minutesPast)
+          || inFirstFiveMin(minutesPast)
+          || inLastFiveMin(minutesPast))
         {
             return "";
         }

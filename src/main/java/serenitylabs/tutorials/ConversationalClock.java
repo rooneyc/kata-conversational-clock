@@ -29,10 +29,10 @@ public class ConversationalClock {
         int minutesFromClosestHour = relativeTime.minutesFromClosestHour(minutesPast);
 
         return beginning                                                  //its
-                + RelativeTime.approxHourPrefix(minutesPast)          //almost, just after
+                + relativeTime.approxHourPrefix(minutesPast)          //almost, just after
                 + MinuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
-                + RelativeTime.minutesQuantifier(minutesPast)         //minutes
-                + RelativeTime.relativeSeparator(minutesPast)         //past, to
+                + relativeTime.minutesQuantifier(minutesPast)         //minutes
+                + relativeTime.relativeSeparator(minutesPast)         //past, to
                 + HourTranslator.wordForHour(closestHour)                 //6, noon, midnight
                 + hourSuffix(closestHour, minutesFromClosestHour)         //o'clock
         ;
