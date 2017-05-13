@@ -1,32 +1,22 @@
 package serenitylabs.tutorials;
 
-import static serenitylabs.tutorials.TimePhrases.*;
+import static serenitylabs.tutorials.HourTranslator.wordForHour;
+import static serenitylabs.tutorials.MinuteTranslator.wordForMinute;
 
 class TimeSentence {
 
     static String with(RelativeTime relativeTime) {
 
-        int closestHour = relativeTime.closestHour();
-        int minutesFromClosestHour = relativeTime.minutesFromClosestHour();
-
         return "it's "                                                  //its
-                + relativeTime.approxHourPrefix()          //almost, just after
-                + MinuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
-                + relativeTime.minutesQuantifier()         //minutes
-                + relativeTime.relativeSeparator()         //past, to
-                + HourTranslator.wordForHour(closestHour)                 //6, noon, midnight
-                + hourSuffix(closestHour, minutesFromClosestHour)         //o'clock
+                + relativeTime.approxHourPrefix()                       //almost, just after
+                + wordForMinute(relativeTime.minutesFromClosestHour())  //five, seventeen
+                + relativeTime.minutesQuantifier()                      //minutes
+                + relativeTime.relativeSeparator()                      //past, to
+                + wordForHour(relativeTime.closestHour())               //6, noon, midnight
+                + relativeTime.hourSuffix()                             //o'clock
         ;
     }
 
-    static private String hourSuffix(int hour, int minute) {
 
-        if ((inFirstFiveMin(minute) || inLastFiveMin(minute))
-                && notNoon(hour) && notMidnight(hour)) {
-            return " o'clock";
-        }
-
-        return  "";
-    }
 
 }
