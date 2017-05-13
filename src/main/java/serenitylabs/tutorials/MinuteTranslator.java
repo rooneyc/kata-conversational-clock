@@ -9,7 +9,7 @@ import static serenitylabs.tutorials.TimePhrases.*;
 
 class MinuteTranslator {
 
-    String wordForMinute(int minute) {
+    static String wordForMinute(int minute) {
 
         if (inFirstFiveMin(minute)) {
             return "";
@@ -35,7 +35,7 @@ class MinuteTranslator {
 
     }
 
-    private String wordForInt(int primitiveInt) {
+    static private String wordForInt(int primitiveInt) {
 
         RuleBasedNumberFormat ruleBasedNumberFormat
                 = new RuleBasedNumberFormat(
@@ -47,7 +47,7 @@ class MinuteTranslator {
         return intStringWithHyphens.replace("-", " ");          //twenty four
     }
 
-    String relativeSeparator(int minute) {
+    static String relativeSeparator(int minute) {
 
         if (inFirstHalf(minute) && notInFirstFiveMin(minute)) {
             return " past ";
@@ -60,7 +60,7 @@ class MinuteTranslator {
         return "";
     }
 
-    String approxHourPrefix(int minute) {
+    static String approxHourPrefix(int minute) {
 
         if (notOnTheHour(minute) && inFirstFiveMin(minute)) {
             return "just after ";
@@ -73,7 +73,7 @@ class MinuteTranslator {
         return "";
     }
 
-    String minutesQuantifier(int minutesPast) {
+    static String minutesQuantifier(int minutesPast) {
 
         if ((onTheHour(minutesPast))
         || multipleOfFive(minutesPast)

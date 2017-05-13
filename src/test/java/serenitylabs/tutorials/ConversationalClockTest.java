@@ -102,8 +102,7 @@ public class ConversationalClockTest {
         when(systemTime.hour()).thenReturn(12);
         when(systemTime.minute()).thenReturn(13);
 
-        ConversationalClock clock = new ConversationalClock(systemTime,
-                new HourTranslator(), new MinuteTranslator());
+        ConversationalClock clock = new ConversationalClock(systemTime);
 
         //When
         clock.currentTime();
@@ -113,14 +112,13 @@ public class ConversationalClockTest {
         verify(systemTime, times(1)).hour();
     }
 
-
     @Test
     public void clock_should_not_be_frozen_in_time() throws Exception {
 
         //Given
         SystemTime systemTime = mock(SystemTime.class);
-        ConversationalClock clock = new ConversationalClock(systemTime,
-                new HourTranslator(), new MinuteTranslator());
+        ConversationalClock clock = new ConversationalClock(systemTime);
+
         //And
         given(systemTime.hour()).willReturn(12);
         given(systemTime.minute()).willReturn(13);
@@ -138,8 +136,7 @@ public class ConversationalClockTest {
 
         //Given
         SystemTime systemTime = mock(SystemTime.class);
-        ConversationalClock clock = new ConversationalClock(systemTime,
-                new HourTranslator(), new MinuteTranslator());
+        ConversationalClock clock = new ConversationalClock(systemTime);
 
         given(systemTime.hour()).willReturn(12);
         given(systemTime.minute()).willReturn(15, 16);
@@ -165,7 +162,6 @@ public class ConversationalClockTest {
         when(systemTime.hour()).thenReturn(time.hour());
         when(systemTime.minute()).thenReturn(time.minute());
 
-        return new ConversationalClock(systemTime,
-                new HourTranslator(), new MinuteTranslator());
+        return new ConversationalClock(systemTime);
     }
 }

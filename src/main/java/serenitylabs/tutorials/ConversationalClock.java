@@ -5,18 +5,11 @@ import static serenitylabs.tutorials.TimePhrases.*;
 public class ConversationalClock {
 
     private RelativeTime relativeTime;
-    private HourTranslator hourTranslator;
-    private MinuteTranslator minuteTranslator;
 
     private final String beginning = "it's ";
 
-    public ConversationalClock(SystemTime time,
-                               HourTranslator hourTranslator,
-                               MinuteTranslator minuteTranslator) {
-
+    public ConversationalClock(SystemTime time) {
         this.relativeTime = new RelativeTime(time);
-        this.hourTranslator = hourTranslator;
-        this.minuteTranslator = minuteTranslator;
     }
 
     private String hourSuffix(int hour, int minute) {
@@ -36,11 +29,11 @@ public class ConversationalClock {
         int minutesFromClosestHour = relativeTime.minutesFromClosestHour();
 
         return beginning                                                  //its
-                + minuteTranslator.approxHourPrefix(minutesPast)          //almost, just after
-                + minuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
-                + minuteTranslator.minutesQuantifier(minutesPast)         //minutes
-                + minuteTranslator.relativeSeparator(minutesPast)         //past, to
-                + hourTranslator.wordForHour(closestHour)                 //6, noon, midnight
+                + MinuteTranslator.approxHourPrefix(minutesPast)          //almost, just after
+                + MinuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
+                + MinuteTranslator.minutesQuantifier(minutesPast)         //minutes
+                + MinuteTranslator.relativeSeparator(minutesPast)         //past, to
+                + HourTranslator.wordForHour(closestHour)                 //6, noon, midnight
                 + hourSuffix(closestHour, minutesFromClosestHour)         //o'clock
         ;
     }

@@ -5,7 +5,7 @@ import static serenitylabs.tutorials.TimePhrases.noon;
 
 class HourTranslator {
 
-    String wordForHour(int hour) {
+    static String wordForHour(int hour) {
 
         String hourString = "";
 
