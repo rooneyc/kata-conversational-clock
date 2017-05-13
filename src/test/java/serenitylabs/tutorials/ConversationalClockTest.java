@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @RunWith(ZohhakRunner.class)
@@ -121,12 +122,14 @@ public class ConversationalClockTest {
         ConversationalClock clock = new ConversationalClock(systemTime,
                 new HourTranslator(), new MinuteTranslator());
 
-        when(systemTime.hour()).thenReturn(12);
-        when(systemTime.minute()).thenReturn(13);
+        given(systemTime.hour()).willReturn(12);
+        given(systemTime.minute()).willReturn(13);
+        //Then
         assertThat(clock.currentTime()).isEqualTo("it's thirteen minutes past noon");
-
-        when(systemTime.hour()).thenReturn(12);
-        when(systemTime.minute()).thenReturn(14);
+        //And
+        given(systemTime.hour()).willReturn(12);
+        given(systemTime.minute()).willReturn(14);
+        //Then
         assertThat(clock.currentTime()).isEqualTo("it's fourteen minutes past noon");
     }
 
