@@ -2,14 +2,16 @@ package serenitylabs.tutorials;
 
 public class ConversationalClock {
 
-    private RelativeTime relativeTime;
+    private SystemTime now;
 
     public ConversationalClock(SystemTime time) {
-        this.relativeTime = new RelativeTime(time);
+        this.now = time;
     }
 
     String currentTime() {
-        return TimeSentence.with(relativeTime);
+        Snapshot snapshot = new Snapshot(now);
+        RelativeTime time = new RelativeTime(snapshot);
+        return TimeSentence.with(time);
     }
 
 }

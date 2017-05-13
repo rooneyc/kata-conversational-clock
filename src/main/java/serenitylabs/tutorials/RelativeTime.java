@@ -1,73 +1,72 @@
 package serenitylabs.tutorials;
 
 import static serenitylabs.tutorials.TimePhrases.*;
-import static serenitylabs.tutorials.TimePhrases.inLastFiveMin;
 
 class RelativeTime {
 
-    private final SystemTime systemTime;
+    private final Snapshot snapshot;
 
-    RelativeTime(SystemTime systemTime) {
-        this.systemTime = systemTime;
+    RelativeTime(Snapshot snapshot) {
+        this.snapshot = snapshot;
     }
 
     private int currentHour() {
-        return systemTime.hour();
+        return snapshot.hour;
     }
 
-    int minutesPast() {
-        return systemTime.minute();
+    private int minutesPast() {
+        return snapshot.minute;
     }
 
-    int closestHour(int minutesPast) {
+    int closestHour() {
 
-        if (inSecondHalf(minutesPast)) {
+        if (inSecondHalf(minutesPast())) {
             return currentHour() + 1;
         }
         return currentHour();
     }
 
-    int minutesFromClosestHour(int minutesPast) {
+    int minutesFromClosestHour() {
 
-        if (inSecondHalf(minutesPast)) {
-            return 60 - minutesPast;
+        if (inSecondHalf(minutesPast())) {
+            return 60 - minutesPast();
         }
 
-        return minutesPast;
+        return minutesPast();
     }
 
-    String relativeSeparator(int minute) {
+    String relativeSeparator() {
 
-        if (inFirstHalf(minute) && notInFirstFiveMin(minute)) {
+        if (inFirstHalf(minutesPast()) && notInFirstFiveMin(minutesPast())) {
             return " past ";
         }
 
-        if (inSecondHalf(minute) && notInLastFiveMin(minute)) {
+        if (inSecondHalf(minutesPast()) && notInLastFiveMin(minutesPast())) {
             return " to ";
         }
 
         return "";
     }
 
-    String approxHourPrefix(int minute) {
+    String approxHourPrefix() {
 
-        if (notOnTheHour(minute) && inFirstFiveMin(minute)) {
+        if (notOnTheHour(minutesPast()) && inFirstFiveMin(minutesPast())) {
             return "just after ";
         }
 
-        if (notOnTheHour(minute) && inLastFiveMin(minute)) {
+        if (notOnTheHour(minutesPast()) && inLastFiveMin(minutesPast())) {
             return "almost ";
         }
 
         return "";
     }
 
-    String minutesQuantifier(int minutesPast) {
+    String minutesQuantifier() {
 
-        if ((onTheHour(minutesPast))
-          || multipleOfFive(minutesPast)
-          || inFirstFiveMin(minutesPast)
-          || inLastFiveMin(minutesPast))
+        if ((onTheHour(minutesPast()))
+          || multipleOfFive(minutesPast())
+          || inFirstFiveMin(minutesPast())
+          || inLastFiveMin(minutesPast()))
         {
             return "";
         }

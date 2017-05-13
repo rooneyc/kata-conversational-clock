@@ -6,15 +6,14 @@ class TimeSentence {
 
     static String with(RelativeTime relativeTime) {
 
-        int minutesPast = relativeTime.minutesPast();
-        int closestHour = relativeTime.closestHour(minutesPast);
-        int minutesFromClosestHour = relativeTime.minutesFromClosestHour(minutesPast);
+        int closestHour = relativeTime.closestHour();
+        int minutesFromClosestHour = relativeTime.minutesFromClosestHour();
 
         return "it's "                                                  //its
-                + relativeTime.approxHourPrefix(minutesPast)          //almost, just after
+                + relativeTime.approxHourPrefix()          //almost, just after
                 + MinuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
-                + relativeTime.minutesQuantifier(minutesPast)         //minutes
-                + relativeTime.relativeSeparator(minutesPast)         //past, to
+                + relativeTime.minutesQuantifier()         //minutes
+                + relativeTime.relativeSeparator()         //past, to
                 + HourTranslator.wordForHour(closestHour)                 //6, noon, midnight
                 + hourSuffix(closestHour, minutesFromClosestHour)         //o'clock
         ;
