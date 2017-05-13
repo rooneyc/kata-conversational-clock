@@ -25,14 +25,14 @@ public class ConversationalClock {
     String currentTime() {
 
         int minutesPast = relativeTime.minutesPast();
-        int closestHour = relativeTime.closestHour();
-        int minutesFromClosestHour = relativeTime.minutesFromClosestHour();
+        int closestHour = relativeTime.closestHour(minutesPast);
+        int minutesFromClosestHour = relativeTime.minutesFromClosestHour(minutesPast);
 
         return beginning                                                  //its
-                + MinuteTranslator.approxHourPrefix(minutesPast)          //almost, just after
+                + RelativeTime.approxHourPrefix(minutesPast)          //almost, just after
                 + MinuteTranslator.wordForMinute(minutesFromClosestHour)  //five, seventeen
-                + MinuteTranslator.minutesQuantifier(minutesPast)         //minutes
-                + MinuteTranslator.relativeSeparator(minutesPast)         //past, to
+                + RelativeTime.minutesQuantifier(minutesPast)         //minutes
+                + RelativeTime.relativeSeparator(minutesPast)         //past, to
                 + HourTranslator.wordForHour(closestHour)                 //6, noon, midnight
                 + hourSuffix(closestHour, minutesFromClosestHour)         //o'clock
         ;

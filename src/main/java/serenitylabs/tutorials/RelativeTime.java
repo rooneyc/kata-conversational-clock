@@ -1,12 +1,13 @@
 package serenitylabs.tutorials;
 
-import static serenitylabs.tutorials.TimePhrases.inSecondHalf;
+import static serenitylabs.tutorials.TimePhrases.*;
+import static serenitylabs.tutorials.TimePhrases.inLastFiveMin;
 
-public class RelativeTime {
+class RelativeTime {
 
     private final SystemTime systemTime;
 
-    public RelativeTime(SystemTime systemTime) {
+    RelativeTime(SystemTime systemTime) {
         this.systemTime = systemTime;
     }
 
@@ -14,21 +15,19 @@ public class RelativeTime {
         return systemTime.hour();
     }
 
-    public int minutesPast() {
+    int minutesPast() {
         return systemTime.minute();
     }
 
-    public int closestHour() {
+    int closestHour(int minutesPast) {
 
-        if (inSecondHalf(minutesPast())) {
+        if (inSecondHalf(minutesPast)) {
             return currentHour() + 1;
         }
         return currentHour();
     }
 
-    public int minutesFromClosestHour() {
-
-        int minutesPast = minutesPast();
+    int minutesFromClosestHour(int minutesPast) {
 
         if (inSecondHalf(minutesPast)) {
             return 60 - minutesPast;
@@ -36,6 +35,45 @@ public class RelativeTime {
 
         return minutesPast;
 
+    }
+
+    static String relativeSeparator(int minute) {
+
+        if (inFirstHalf(minute) && notInFirstFiveMin(minute)) {
+            return " past ";
+        }
+
+        if (inSecondHalf(minute) && notInLastFiveMin(minute)) {
+            return " to ";
+        }
+
+        return "";
+    }
+
+    static String approxHourPrefix(int minute) {
+
+        if (notOnTheHour(minute) && inFirstFiveMin(minute)) {
+            return "just after ";
+        }
+
+        if (notOnTheHour(minute) && inLastFiveMin(minute)) {
+            return "almost ";
+        }
+
+        return "";
+    }
+
+    static String minutesQuantifier(int minutesPast) {
+
+        if ((onTheHour(minutesPast))
+                || multipleOfFive(minutesPast)
+                || inFirstFiveMin(minutesPast)
+                || inLastFiveMin(minutesPast))
+        {
+            return "";
+        }
+
+        return " minutes";
     }
 
 }
