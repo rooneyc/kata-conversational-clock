@@ -145,7 +145,7 @@ public class ConversationalClockTest {
         given(systemTime.minute()).willReturn(15, 16);
 
         //Then
-        assertThat(clock.currentTime()).isEqualTo("it's quarter past noon");
+        assertThat(clock.currentTime()).isEqualTo("it's a quarter past noon");
     }
 
     /**
